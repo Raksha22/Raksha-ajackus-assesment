@@ -3,7 +3,7 @@ module Api
     class OrdersController < ApplicationController
 
       def index
-        orders = Order.all.order(created_at: :desc)
+        orders = current_user.orders.order(created_at: :desc)
 
         render json: orders.map { |order|
           {
@@ -19,7 +19,17 @@ module Api
       end
 
       def show
-        order = Order.find(params[:id])
+        id = integer_id_param
+        unless id
+          render json: { error: "Not found" }, status: :not_found
+          return
+        end
+
+        order = current_user.orders.find_by(id: id)
+        unless order
+          render json: { error: "Not found" }, status: :not_found
+          return
+        end
 
         render json: {
           id: order.id,
@@ -78,7 +88,17 @@ module Api
       end
 
       def cancel
-        order = Order.find(params[:id])
+        id = integer_id_param
+        unless id
+          render json: { error: "Not found" }, status: :not_found
+          return
+        end
+
+        order = current_user.orders.find_by(id: id)
+        unless order
+          render json: { error: "Not found" }, status: :not_found
+          return
+        end
 
         if order.status == "confirmed" || order.status == "pending"
           order.cancel!
@@ -86,6 +106,12 @@ module Api
         else
           render json: { error: "Cannot cancel order in #{order.status} status" }, status: :unprocessable_entity
         end
+      end
+
+      private
+
+      def integer_id_param
+        Integer(params[:id], exception: false)
       end
     end
   end
