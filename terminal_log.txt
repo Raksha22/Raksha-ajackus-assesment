@@ -6567,3 +6567,194 @@ docker-compose up --build -d[K[A[20C[15Cup --build[1B[K[A[73C[?2004l[
 
 [36mdb-1    | [0m2026-04-05 09:40:12.356 UTC [27] LOG:  checkpoint starting: time
 [36mdb-1    | [0m2026-04-05 09:40:26.637 UTC [27] LOG:  checkpoint complete: wrote 140 buffers (0.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=14.254 s, sync=0.015 s, total=14.281 s; sync files=112, longest=0.004 s, average=0.001 s; distance=689 kB, estimate=689 kB
+[32mweb-1   | [0mStarted GET "/api/v1/events" for 127.0.0.1 at 2026-04-05 09:44:38 +0000
+[32mweb-1   | [0m  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+[32mweb-1   | [0mProcessing by Api::V1::EventsController#index as */*
+[32mweb-1   | [0m  [1m[36mEvent Load (0.9ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."status" = $1 AND (starts_at > '2026-04-05 09:44:38.693768') ORDER BY starts_at ASC[0m  [["status", "published"]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:23:in `map'
+[32mweb-1   | [0mCompleted 200 OK in 28ms (Views: 0.2ms | ActiveRecord: 5.9ms | Allocations: 14471)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted POST "/api/v1/auth/login" for 127.0.0.1 at 2026-04-05 09:44:44 +0000
+[32mweb-1   | [0mProcessing by Api::V1::AuthController#login as */*
+[32mweb-1   | [0m  Parameters: {"email"=>"vikram@example.com", "password"=>"[FILTERED]", "auth"=>{"email"=>"vikram@example.com", "password"=>"[FILTERED]"}}
+[32mweb-1   | [0m  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vikram@example.com"], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/auth_controller.rb:18:in `login'
+[32mweb-1   | [0mCompleted 401 Unauthorized in 9ms (Views: 0.2ms | ActiveRecord: 2.2ms | Allocations: 2804)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/orders" for 127.0.0.1 at 2026-04-05 09:44:44 +0000
+[32mweb-1   | [0mProcessing by Api::V1::OrdersController#index as */*
+[32mweb-1   | [0mFilter chain halted as :authenticate_user! rendered or redirected
+[32mweb-1   | [0mCompleted 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 216)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/events?search=ZZZNO_MATCH_999" for 127.0.0.1 at 2026-04-05 09:44:51 +0000
+[32mweb-1   | [0mProcessing by Api::V1::EventsController#index as */*
+[32mweb-1   | [0m  Parameters: {"search"=>"ZZZNO_MATCH_999"}
+[32mweb-1   | [0m  [1m[36mEvent Load (3.1ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."status" = $1 AND (starts_at > '2026-04-05 09:44:51.357120') AND (title LIKE '%ZZZNO_MATCH_999%' OR description LIKE '%ZZZNO_MATCH_999%') ORDER BY starts_at ASC[0m  [["status", "published"]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:23:in `map'
+[32mweb-1   | [0mCompleted 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 3.1ms | Allocations: 588)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/events?search=x%27%20OR%201=1--" for 127.0.0.1 at 2026-04-05 09:44:51 +0000
+[32mweb-1   | [0mProcessing by Api::V1::EventsController#index as */*
+[32mweb-1   | [0m  Parameters: {"search"=>"x' OR 1=1--"}
+[36mdb-1    | [0m2026-04-05 09:44:51.392 UTC [81] ERROR:  syntax error at end of input at character 200
+[36mdb-1    | [0m2026-04-05 09:44:51.392 UTC [81] STATEMENT:  SELECT "events".* FROM "events" WHERE "events"."status" = $1 AND (starts_at > '2026-04-05 09:44:51.391446') AND (title LIKE '%x' OR 1=1--%' OR description LIKE '%x' OR 1=1--%') ORDER BY starts_at ASC
+[32mweb-1   | [0m  [1m[36mEvent Load (0.9ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."status" = $1 AND (starts_at > '2026-04-05 09:44:51.391446') AND (title LIKE '%x' OR 1=1--%' OR description LIKE '%x' OR 1=1--%') ORDER BY starts_at ASC[0m  [["status", "published"]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:23:in `map'
+[32mweb-1   | [0mCompleted 500 Internal Server Error in 2ms (ActiveRecord: 0.9ms | Allocations: 723)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0m  
+[32mweb-1   | [0mActiveRecord::StatementInvalid (PG::SyntaxError: ERROR:  syntax error at end of input
+[32mweb-1   | [0mLINE 1: ... OR description LIKE '%x' OR 1=1--%') ORDER BY starts_at ASC
+[32mweb-1   | [0m                                                                       ^
+[32mweb-1   | [0m):
+[32mweb-1   | [0m  
+[32mweb-1   | [0mStarted POST "/api/v1/auth/login" for 127.0.0.1 at 2026-04-05 09:45:01 +0000
+[32mweb-1   | [0mProcessing by Api::V1::AuthController#login as */*
+[32mweb-1   | [0m  Parameters: {"email"=>"vikram@example.com", "password"=>"[FILTERED]", "auth"=>{"email"=>"vikram@example.com", "password"=>"[FILTERED]"}}
+[32mweb-1   | [0m  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vikram@example.com"], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/auth_controller.rb:18:in `login'
+[32mweb-1   | [0mCompleted 401 Unauthorized in 12ms (Views: 3.2ms | ActiveRecord: 0.8ms | Allocations: 438)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/orders" for 127.0.0.1 at 2026-04-05 09:45:01 +0000
+[32mweb-1   | [0mProcessing by Api::V1::OrdersController#index as */*
+[32mweb-1   | [0mFilter chain halted as :authenticate_user! rendered or redirected
+[32mweb-1   | [0mCompleted 401 Unauthorized in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 85)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[36mdb-1    | [0m2026-04-05 09:45:12.733 UTC [27] LOG:  checkpoint starting: time
+[36mdb-1    | [0m2026-04-05 09:45:14.426 UTC [27] LOG:  checkpoint complete: wrote 18 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.677 s, sync=0.008 s, total=1.694 s; sync files=19, longest=0.006 s, average=0.001 s; distance=75 kB, estimate=628 kB
+[32mweb-1   | [0mStarted POST "/api/v1/auth/login" for 127.0.0.1 at 2026-04-05 09:45:58 +0000
+[32mweb-1   | [0mProcessing by Api::V1::AuthController#login as */*
+[32mweb-1   | [0m  Parameters: {"email"=>"vikram@example.com", "password"=>"[FILTERED]", "auth"=>{"email"=>"vikram@example.com", "password"=>"[FILTERED]"}}
+[32mweb-1   | [0m  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vikram@example.com"], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/auth_controller.rb:18:in `login'
+[32mweb-1   | [0mCompleted 200 OK in 218ms (Views: 0.3ms | ActiveRecord: 10.6ms | Allocations: 7422)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/orders" for 127.0.0.1 at 2026-04-05 09:45:58 +0000
+[32mweb-1   | [0mProcessing by Api::V1::OrdersController#index as */*
+[32mweb-1   | [0m  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 75], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/application_controller.rb:12:in `authenticate_user!'
+[32mweb-1   | [0m  [1m[36mOrder Load (0.3ms)[0m  [1m[34mSELECT "orders".* FROM "orders" ORDER BY "orders"."created_at" DESC[0m
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:8:in `map'
+[32mweb-1   | [0m  [1m[36mEvent Load (0.1ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."id" = $1 LIMIT $2[0m  [["id", 57], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:12:in `block in index'
+[32mweb-1   | [0m  [1m[36mOrderItem Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "order_items" WHERE "order_items"."order_id" = $1[0m  [["order_id", 19]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:15:in `block in index'
+[32mweb-1   | [0m  [1m[36mEvent Load (0.1ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."id" = $1 LIMIT $2[0m  [["id", 58], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:12:in `block in index'
+[32mweb-1   | [0m  [1m[36mOrderItem Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "order_items" WHERE "order_items"."order_id" = $1[0m  [["order_id", 18]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:15:in `block in index'
+[32mweb-1   | [0m  [1m[36mCACHE Event Load (0.0ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."id" = $1 LIMIT $2[0m  [["id", 57], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:12:in `block in index'
+[32mweb-1   | [0m  [1m[36mOrderItem Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "order_items" WHERE "order_items"."order_id" = $1[0m  [["order_id", 17]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:15:in `block in index'
+[32mweb-1   | [0m  [1m[36mEvent Load (0.1ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."id" = $1 LIMIT $2[0m  [["id", 56], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:12:in `block in index'
+[32mweb-1   | [0m  [1m[36mOrderItem Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "order_items" WHERE "order_items"."order_id" = $1[0m  [["order_id", 16]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:15:in `block in index'
+[32mweb-1   | [0mCompleted 200 OK in 51ms (Views: 0.2ms | ActiveRecord: 5.8ms | Allocations: 23679)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted POST "/api/v1/auth/login" for 127.0.0.1 at 2026-04-05 09:46:05 +0000
+[32mweb-1   | [0mProcessing by Api::V1::AuthController#login as */*
+[32mweb-1   | [0m  Parameters: {"email"=>"vikram@example.com", "password"=>"[FILTERED]", "auth"=>{"email"=>"vikram@example.com", "password"=>"[FILTERED]"}}
+[32mweb-1   | [0m  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vikram@example.com"], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/auth_controller.rb:18:in `login'
+[32mweb-1   | [0mCompleted 200 OK in 194ms (Views: 0.4ms | ActiveRecord: 1.0ms | Allocations: 541)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/orders/16" for 127.0.0.1 at 2026-04-05 09:46:05 +0000
+[32mweb-1   | [0mProcessing by Api::V1::OrdersController#show as */*
+[32mweb-1   | [0m  Parameters: {"id"=>"16"}
+[32mweb-1   | [0m  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 75], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/application_controller.rb:12:in `authenticate_user!'
+[32mweb-1   | [0m  [1m[36mOrder Load (0.3ms)[0m  [1m[34mSELECT "orders".* FROM "orders" WHERE "orders"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:22:in `show'
+[32mweb-1   | [0m  [1m[36mEvent Load (0.2ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."id" = $1 LIMIT $2[0m  [["id", 56], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:30:in `show'
+[32mweb-1   | [0m  [1m[36mOrderItem Load (0.1ms)[0m  [1m[34mSELECT "order_items".* FROM "order_items" WHERE "order_items"."order_id" = $1[0m  [["order_id", 16]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:34:in `map'
+[32mweb-1   | [0m  [1m[36mTicketTier Load (0.2ms)[0m  [1m[34mSELECT "ticket_tiers".* FROM "ticket_tiers" WHERE "ticket_tiers"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:36:in `block in show'
+[32mweb-1   | [0m  [1m[36mPayment Load (0.6ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."order_id" = $1 LIMIT $2[0m  [["order_id", 16], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:42:in `show'
+[32mweb-1   | [0mCompleted 200 OK in 58ms (Views: 0.2ms | ActiveRecord: 13.5ms | Allocations: 21537)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/events" for 127.0.0.1 at 2026-04-05 09:46:10 +0000
+[32mweb-1   | [0mProcessing by Api::V1::EventsController#index as */*
+[32mweb-1   | [0m  [1m[36mEvent Load (0.4ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."status" = $1 AND (starts_at > '2026-04-05 09:46:10.783772') ORDER BY starts_at ASC[0m  [["status", "published"]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:23:in `map'
+[32mweb-1   | [0m  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 73], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:33:in `block in index'
+[32mweb-1   | [0m  [1m[36mTicketTier Sum (0.2ms)[0m  [1m[34mSELECT SUM("ticket_tiers"."quantity") FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 58]]
+[32mweb-1   | [0m  ↳ app/models/event.rb:17:in `total_tickets'
+[32mweb-1   | [0m  [1m[36mTicketTier Sum (0.1ms)[0m  [1m[34mSELECT SUM("ticket_tiers"."sold_count") FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 58]]
+[32mweb-1   | [0m  ↳ app/models/event.rb:21:in `total_sold'
+[32mweb-1   | [0m  [1m[36mTicketTier Load (0.2ms)[0m  [1m[34mSELECT "ticket_tiers".* FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 58]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:36:in `map'
+[32mweb-1   | [0m  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 72], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:33:in `block in index'
+[32mweb-1   | [0m  [1m[36mTicketTier Sum (0.1ms)[0m  [1m[34mSELECT SUM("ticket_tiers"."quantity") FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 56]]
+[32mweb-1   | [0m  ↳ app/models/event.rb:17:in `total_tickets'
+[32mweb-1   | [0m  [1m[36mTicketTier Sum (0.1ms)[0m  [1m[34mSELECT SUM("ticket_tiers"."sold_count") FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 56]]
+[32mweb-1   | [0m  ↳ app/models/event.rb:21:in `total_sold'
+[32mweb-1   | [0m  [1m[36mTicketTier Load (0.1ms)[0m  [1m[34mSELECT "ticket_tiers".* FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 56]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:36:in `map'
+[32mweb-1   | [0m  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 72], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:33:in `block in index'
+[32mweb-1   | [0m  [1m[36mTicketTier Sum (0.1ms)[0m  [1m[34mSELECT SUM("ticket_tiers"."quantity") FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 57]]
+[32mweb-1   | [0m  ↳ app/models/event.rb:17:in `total_tickets'
+[32mweb-1   | [0m  [1m[36mTicketTier Sum (0.1ms)[0m  [1m[34mSELECT SUM("ticket_tiers"."sold_count") FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 57]]
+[32mweb-1   | [0m  ↳ app/models/event.rb:21:in `total_sold'
+[32mweb-1   | [0m  [1m[36mTicketTier Load (0.1ms)[0m  [1m[34mSELECT "ticket_tiers".* FROM "ticket_tiers" WHERE "ticket_tiers"."event_id" = $1[0m  [["event_id", 57]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/events_controller.rb:36:in `map'
+[32mweb-1   | [0mCompleted 200 OK in 14ms (Views: 0.3ms | ActiveRecord: 1.7ms | Allocations: 7649)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[36mdb-1    | [0m2026-04-05 09:50:12.442 UTC [27] LOG:  checkpoint starting: time
+[36mdb-1    | [0m2026-04-05 09:50:14.826 UTC [27] LOG:  checkpoint complete: wrote 23 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.316 s, sync=0.014 s, total=2.384 s; sync files=21, longest=0.006 s, average=0.001 s; distance=14 kB, estimate=566 kB
+[32mweb-1   | [0mStarted POST "/api/v1/auth/login" for 127.0.0.1 at 2026-04-05 09:53:09 +0000
+[32mweb-1   | [0mProcessing by Api::V1::AuthController#login as */*
+[32mweb-1   | [0m  Parameters: {"email"=>"vikram@example.com", "password"=>"[FILTERED]", "auth"=>{"email"=>"vikram@example.com", "password"=>"[FILTERED]"}}
+[32mweb-1   | [0m  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vikram@example.com"], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/auth_controller.rb:18:in `login'
+[32mweb-1   | [0mCompleted 200 OK in 226ms (Views: 0.2ms | ActiveRecord: 3.6ms | Allocations: 9048)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/orders" for 127.0.0.1 at 2026-04-05 09:53:10 +0000
+[32mweb-1   | [0mProcessing by Api::V1::OrdersController#index as */*
+[32mweb-1   | [0m  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 75], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/application_controller.rb:12:in `authenticate_user!'
+[32mweb-1   | [0m  [1m[36mOrder Load (0.2ms)[0m  [1m[34mSELECT "orders".* FROM "orders" WHERE "orders"."user_id" = $1 ORDER BY "orders"."created_at" DESC[0m  [["user_id", 75]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:8:in `map'
+[32mweb-1   | [0m  [1m[36mEvent Load (0.2ms)[0m  [1m[34mSELECT "events".* FROM "events" WHERE "events"."id" = $1 LIMIT $2[0m  [["id", 57], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:12:in `block in index'
+[32mweb-1   | [0m  [1m[36mOrderItem Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "order_items" WHERE "order_items"."order_id" = $1[0m  [["order_id", 17]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:15:in `block in index'
+[32mweb-1   | [0mCompleted 200 OK in 14ms (Views: 0.2ms | ActiveRecord: 0.8ms | Allocations: 15634)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[32mweb-1   | [0mStarted GET "/api/v1/orders/16" for 127.0.0.1 at 2026-04-05 09:53:10 +0000
+[32mweb-1   | [0mProcessing by Api::V1::OrdersController#show as */*
+[32mweb-1   | [0m  Parameters: {"id"=>"16"}
+[32mweb-1   | [0m  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 75], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/application_controller.rb:12:in `authenticate_user!'
+[32mweb-1   | [0m  [1m[36mOrder Load (0.1ms)[0m  [1m[34mSELECT "orders".* FROM "orders" WHERE "orders"."user_id" = $1 AND "orders"."id" = $2 LIMIT $3[0m  [["user_id", 75], ["id", 16], ["LIMIT", 1]]
+[32mweb-1   | [0m  ↳ app/controllers/api/v1/orders_controller.rb:22:in `show'
+[32mweb-1   | [0mCompleted 404 Not Found in 2ms (Views: 0.1ms | ActiveRecord: 0.3ms | Allocations: 1176)
+[32mweb-1   | [0m
+[32mweb-1   | [0m
+[36mdb-1    | [0m2026-04-05 09:55:12.855 UTC [27] LOG:  checkpoint starting: time
+[36mdb-1    | [0m2026-04-05 09:55:15.233 UTC [27] LOG:  checkpoint complete: wrote 25 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.357 s, sync=0.005 s, total=2.378 s; sync files=20, longest=0.002 s, average=0.001 s; distance=93 kB, estimate=519 kB
+[36mdb-1    | [0m2026-04-05 10:00:12.320 UTC [27] LOG:  checkpoint starting: time
+[36mdb-1    | [0m2026-04-05 10:00:14.740 UTC [27] LOG:  checkpoint complete: wrote 25 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=2.403 s, sync=0.005 s, total=2.421 s; sync files=20, longest=0.004 s, average=0.001 s; distance=129 kB, estimate=480 kB
+[36mdb-1    | [0m2026-04-05 10:05:12.748 UTC [27] LOG:  checkpoint starting: time
+[36mdb-1    | [0m2026-04-05 10:06:51.463 UTC [27] LOG:  checkpoint complete: wrote 954 buffers (5.8%); 1 WAL file(s) added, 0 removed, 0 recycled; write=98.642 s, sync=0.027 s, total=98.715 s; sync files=347, longest=0.002 s, average=0.001 s; distance=4415 kB, estimate=4415 kB

@@ -1,3 +1,5 @@
+# Assessment Recording - https://drive.google.com/file/d/1zqxBp1bXgaAdSFOb3bwHeyZRofm5vJW8/view?usp=drive_link
+
 # Code review — top 7 issues (by business impact)
 
 Review scope: API controllers, authentication, and related models. Proofs below use the **development** Rails server (e.g. `docker-compose up web`) with **`rails db:seed`** so seeded users exist. Host: `http://127.0.0.1:3000`.
