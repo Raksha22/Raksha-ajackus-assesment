@@ -8,6 +8,10 @@ Rails.application.routes.draw do
         resources :ticket_tiers, only: [:index, :create, :update, :destroy]
       end
 
+      get "bookmarks", to: "bookmarks#index"
+      post "events/:event_id/bookmarks", to: "bookmarks#create"
+      delete "events/:event_id/bookmarks", to: "bookmarks#destroy"
+
       resources :orders, only: [:index, :show, :create] do
         member do
           post :cancel

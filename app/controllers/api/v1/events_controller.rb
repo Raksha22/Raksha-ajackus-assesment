@@ -2,6 +2,7 @@ module Api
   module V1
     class EventsController < ApplicationController
       skip_before_action :authenticate_user!, only: [:index, :show]
+      before_action :authenticate_user_optional, only: [:show]
 
       def index
         events = Event.published.upcoming
@@ -48,7 +49,7 @@ module Api
       def show
         event = Event.find(params[:id])
 
-        render json: {
+        payload = {
           id: event.id,
           title: event.title,
           description: event.description,
@@ -73,6 +74,9 @@ module Api
             }
           }
         }
+        payload[:bookmark_count] = event.bookmarks.count if show_bookmark_count?(event)
+
+        render json: payload
       end
 
       def create
@@ -107,6 +111,26 @@ module Api
       def event_params
         params.require(:event).permit(:title, :description, :venue, :city,
           :starts_at, :ends_at, :category, :max_capacity, :status)
+      end
+
+      def authenticate_user_optional
+        @current_user = nil
+        header = request.headers["Authorization"]
+        token = header&.split(" ")&.last
+        return if token.blank?
+
+        begin
+          decoded = JWT.decode(token, Rails.application.secret_key_base, true, algorithm: "HS256")
+          @current_user = User.find(decoded[0]["user_id"])
+        rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+          @current_user = nil
+        end
+      end
+
+      def show_bookmark_count?(event)
+        current_user.present? &&
+          current_user.organizer? &&
+          event.user_id == current_user.id
       end
     end
   end
