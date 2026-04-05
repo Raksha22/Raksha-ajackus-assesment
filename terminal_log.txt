@@ -6565,3 +6565,5 @@ docker-compose up --build -d[K[A[20C[15Cup --build[1B[K[A[73C[?2004l[
 [0m
 
 
+[36mdb-1    | [0m2026-04-05 09:40:12.356 UTC [27] LOG:  checkpoint starting: time
+[36mdb-1    | [0m2026-04-05 09:40:26.637 UTC [27] LOG:  checkpoint complete: wrote 140 buffers (0.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=14.254 s, sync=0.015 s, total=14.281 s; sync files=112, longest=0.004 s, average=0.001 s; distance=689 kB, estimate=689 kB

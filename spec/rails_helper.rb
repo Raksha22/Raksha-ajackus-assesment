@@ -1,5 +1,6 @@
 require "spec_helper"
-ENV["RAILS_ENV"] ||= "test"
+# Force test so specs stay correct when run via `docker-compose exec web` (web sets RAILS_ENV=development).
+ENV["RAILS_ENV"] = "test"
 
 require_relative "../config/environment"
 abort("The Rails environment is running in production mode!") if Rails.env.production?
